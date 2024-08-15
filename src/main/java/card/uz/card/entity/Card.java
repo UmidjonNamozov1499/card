@@ -5,7 +5,9 @@ import card.uz.card.model.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,18 +19,19 @@ import java.util.Date;
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Users users_id;
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private CardStatus status=CardStatus.ACTIVE;
+    private CardStatus status = CardStatus.ACTIVE;
     @Column(name = "balance", nullable = false)
-    private Long balance=0L;
+    private BigDecimal balance;
 
     @Column(name = "currency", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Currency currency=Currency.UZS;
-
+    private Currency currency = Currency.UZS;
+    @Column(nullable = false)
+    private UUID idempotencyKey;
 }
